@@ -1,0 +1,53 @@
+#creates BinaryTree object class
+class BinaryTree:
+   def __init__(self, data = ""):
+      self.data = data
+      self.left = None
+      self.right = None
+
+#input must be a fully parenthesized mathematical expressions
+def parse_tree_build(math_exp: str):
+    #break up expression into list of tokens: parentheses, operators, operands
+    tokens = math_exp.split()
+    #create new stack to track position during traversal
+    stack = []
+    #create new tree and use stack & variable to keep track of position
+    tree = BinaryTree()
+    stack.append(tree)
+    current_tree = tree
+
+    # t(oken)
+    for t in tokens:
+        if t == "(":
+            #create new left child node and move down to it
+            current_tree.left = BinaryTree()
+            stack.append(current_tree)
+            current_tree = current_tree.left
+        elif t in ["+", "-", "*", "/"]:
+            #set value of current node to operator then create new right child and move down to it
+            current_tree.data = t
+            current_tree.right = BinaryTree()
+            stack.append(current_tree)
+            current_tree = current_tree.right
+        elif t.isdigit():
+            #set value of current node to number and move up to parent
+            current_tree.data = int(t)
+            parent = stack.pop()
+            current_tree = parent
+        elif t == ")":
+            #move up to parent
+            current_tree = stack.pop()
+        else:
+            raise ValueError(f"Check token'{t}'")
+
+    return tree
+
+#in process of developing more features for the parse tree
+
+#reprint math expression from parse tree
+def print_math_exp(tree):
+    pass
+
+#calculate value of given parse tree
+def evaluate_tree(tree):
+    pass
